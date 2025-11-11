@@ -19,4 +19,5 @@ namespace SistemaAcademia.Models
         public Aluno() { DataCriacao = DateTime.Now; }
 
     }
+    /*enum ai*/
 }
