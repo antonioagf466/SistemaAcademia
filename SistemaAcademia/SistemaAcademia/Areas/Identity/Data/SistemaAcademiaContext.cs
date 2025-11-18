@@ -31,7 +31,6 @@ public class SistemaAcademiaContext : IdentityDbContext<SistemaAcademiaUser>
 
     public DbSet<SistemaAcademia.Models.Manutencao>? Manutencao { get; set; }
 
-    public DbSet<SistemaAcademia.Models.Matricula>? Matricula { get; set; }
 
     public DbSet<SistemaAcademia.Models.Pagamento>? Pagamento { get; set; }
 

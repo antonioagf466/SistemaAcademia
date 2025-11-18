@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaAcademia.Data;
 using SistemaAcademia.Models;
+using SistemaAcademia.Models.ViewModels;
 
 namespace SistemaAcademia.Controllers
 {
@@ -48,7 +49,9 @@ namespace SistemaAcademia.Controllers
         // GET: Aulas/Create
         public IActionResult Create()
         {
-            return View();
+            var viewModel = new AulaFormViewModel();
+            viewModel.Professors = _context.Professor.ToList();
+            return View(viewModel);
         }
 
         // POST: Aulas/Create
@@ -56,15 +59,14 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Horario,Vagas,Tipo,Sala")] Aula aula)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Horario,Vagas,Tipo,Sala,ProfessorId")] Aula aula)
         {
-            if (ModelState.IsValid)
-            {
+            
                 _context.Add(aula);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(aula);
+            
+
         }
 
         // GET: Aulas/Edit/5

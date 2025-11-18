@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaAcademia.Data;
 
@@ -11,9 +12,10 @@ using SistemaAcademia.Data;
 namespace SistemaAcademia.Migrations
 {
     [DbContext(typeof(SistemaAcademiaContext))]
-    partial class SistemaAcademiaContextModelSnapshot : ModelSnapshot
+    [Migration("20251117225248_removendo_matricula")]
+    partial class removendo_matricula
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -249,10 +251,6 @@ namespace SistemaAcademia.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Matricula")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -560,7 +558,7 @@ namespace SistemaAcademia.Migrations
             modelBuilder.Entity("SistemaAcademia.Models.Aula", b =>
                 {
                     b.HasOne("SistemaAcademia.Models.Professor", "Professor")
-                        .WithMany("Aulas")
+                        .WithMany()
                         .HasForeignKey("ProfessorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -571,11 +569,6 @@ namespace SistemaAcademia.Migrations
             modelBuilder.Entity("SistemaAcademia.Models.Aula", b =>
                 {
                     b.Navigation("Alunos");
-                });
-
-            modelBuilder.Entity("SistemaAcademia.Models.Professor", b =>
-                {
-                    b.Navigation("Aulas");
                 });
 #pragma warning restore 612, 618
         }
