@@ -4,6 +4,9 @@
         {
             public Aula Aula { get; set; }
 
+
             public List<Professor> Professors { get; set; }
-        }
+
+            public List<Sala> Salas { get; set; }
+    }
     }

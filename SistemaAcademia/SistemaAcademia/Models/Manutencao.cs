@@ -12,6 +12,8 @@ namespace SistemaAcademia.Models
         public string Tecnico { get; set; }
         public string? Observacao { get; set; }
         public double Custo { get; set; }
-
+        [Display(Name = "Equipamento")]
+        public int EquipamentoId { get; set; }
+        public Equipamento Equipamento { get; set; }
     }
 }

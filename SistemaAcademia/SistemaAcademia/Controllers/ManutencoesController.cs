@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaAcademia.Data;
 using SistemaAcademia.Models;
+using SistemaAcademia.Models.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SistemaAcademia.Controllers
 {
@@ -23,7 +24,9 @@ namespace SistemaAcademia.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Manutencao != null ? 
-                          View(await _context.Manutencao.ToListAsync()) :
+                          View(await _context.Manutencao
+                          .Include(m => m.Equipamento)
+                          .ToListAsync()) :
                           Problem("Entity set 'SistemaAcademiaContext.Manutencao'  is null.");
         }
 
@@ -48,7 +51,9 @@ namespace SistemaAcademia.Controllers
         // GET: Manutencoes/Create
         public IActionResult Create()
         {
-            return View();
+            var viewModel = new ManutencaoFormViewModel();
+            viewModel.Equipamentos = _context.Equipamento.ToList();
+            return View(viewModel);
         }
 
         // POST: Manutencoes/Create
@@ -56,15 +61,12 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Tipo,Data,Tecnico,Observacao,Custo")] Manutencao manutencao)
+        public async Task<IActionResult> Create([Bind("Id,Tipo,Data,Tecnico,Observacao,Custo,EquipamentoId")] Manutencao manutencao)
         {
-            if (ModelState.IsValid)
-            {
+
                 _context.Add(manutencao);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(manutencao);
         }
 
         // GET: Manutencoes/Edit/5
@@ -80,7 +82,10 @@ namespace SistemaAcademia.Controllers
             {
                 return NotFound();
             }
-            return View(manutencao);
+            ManutencaoFormViewModel viewModel = new ManutencaoFormViewModel();
+            viewModel.Manutencao = manutencao;
+            viewModel.Equipamentos = _context.Equipamento.ToList();
+            return View(viewModel);
         }
 
         // POST: Manutencoes/Edit/5
@@ -88,7 +93,7 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Tipo,Data,Tecnico,Observacao,Custo")] Manutencao manutencao)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Tipo,Data,Tecnico,Observacao,Custo,EquipamentoId")] Manutencao manutencao)
         {
             if (id != manutencao.Id)
             {

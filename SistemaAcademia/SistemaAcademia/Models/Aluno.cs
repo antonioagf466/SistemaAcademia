@@ -15,7 +15,9 @@ namespace SistemaAcademia.Models
         public DateTime DataNasc { get; set; }
         public string Matricula { get; set; }
         public DateTime DataCriacao { get; private set; }
-        public bool Ativo { get; set; }
+        public int PlanoId { get; set; }
+
+        public Plano Plano { get; set; }
         public Aluno()
         {
             DataCriacao = DateTime.Now;

@@ -8,6 +8,10 @@
         public string Forma { get; set;}
         public DateTime Data { get; private set; }
 
+        public int AlunoId { get; set; }
+
+        public Aluno Aluno { get; set; }
+
         public Pagamento() { Data = DateTime.Now; }
     }
 }

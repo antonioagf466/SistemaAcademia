@@ -1,4 +1,4 @@
-﻿@model SistemaAcademia.Models.Pagamento
+﻿@model SistemaAcademia.Models.ViewModels.PagamentoFormViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,26 +12,30 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Pagamento.Id" />
             <div class="form-group">
-                <label asp-for="NumeroRecibo" class="control-label"></label>
-                <input asp-for="NumeroRecibo" class="form-control" />
-                <span asp-validation-for="NumeroRecibo" class="text-danger"></span>
+                <label asp-for="Pagamento.NumeroRecibo" class="control-label"></label>
+                <input asp-for="Pagamento.NumeroRecibo" class="form-control" />
+                <span asp-validation-for="Pagamento.NumeroRecibo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Valor" class="control-label"></label>
-                <input asp-for="Valor" class="form-control" />
-                <span asp-validation-for="Valor" class="text-danger"></span>
+                <label asp-for="Pagamento.Valor" class="control-label"></label>
+                <input asp-for="Pagamento.Valor" class="form-control" />
+                <span asp-validation-for="Pagamento.Valor" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Forma" class="control-label"></label>
-                <input asp-for="Forma" class="form-control" />
-                <span asp-validation-for="Forma" class="text-danger"></span>
+                <label asp-for="Pagamento.Forma" class="control-label"></label>
+                <input asp-for="Pagamento.Forma" class="form-control" />
+                <span asp-validation-for="Pagamento.Forma" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Data" class="control-label"></label>
-                <input asp-for="Data" class="form-control" />
-                <span asp-validation-for="Data" class="text-danger"></span>
+                <label asp-for="Pagamento.Data" class="control-label"></label>
+                <input asp-for="Pagamento.Data" class="form-control" />
+                <span asp-validation-for="Pagamento.Data" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Pagamento.AlunoId" class="control-label"></label>
+                <select asp-for="Pagamento.AlunoId" class="form-control" asp-items="@(new SelectList(Model.Alunos, "Id", "Nome"))"> </select>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

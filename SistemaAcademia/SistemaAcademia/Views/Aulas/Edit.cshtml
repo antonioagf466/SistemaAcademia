@@ -1,4 +1,4 @@
-﻿@model SistemaAcademia.Models.Aula
+﻿@model SistemaAcademia.Models.ViewModels.AulaFormViewModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -12,31 +12,36 @@
     <div class="col-md-4">
         <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Aula.Id" />
             <div class="form-group">
-                <label asp-for="Nome" class="control-label"></label>
-                <input asp-for="Nome" class="form-control" />
-                <span asp-validation-for="Nome" class="text-danger"></span>
+                <label asp-for="Aula.Nome" class="control-label"></label>
+                <input asp-for="Aula.Nome" class="form-control" />
+                <span asp-validation-for="Aula.Nome" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Horario" class="control-label"></label>
-                <input asp-for="Horario" class="form-control" />
-                <span asp-validation-for="Horario" class="text-danger"></span>
+                <label asp-for="Aula.Horario" class="control-label"></label>
+                <input asp-for="Aula.Horario" class="form-control" />
+                <span asp-validation-for="Aula.Horario" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Vagas" class="control-label"></label>
-                <input asp-for="Vagas" class="form-control" />
-                <span asp-validation-for="Vagas" class="text-danger"></span>
+                <label asp-for="Aula.Vagas" class="control-label"></label>
+                <input asp-for="Aula.Vagas" class="form-control" />
+                <span asp-validation-for="Aula.Vagas" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Tipo" class="control-label"></label>
-                <input asp-for="Tipo" class="form-control" />
-                <span asp-validation-for="Tipo" class="text-danger"></span>
+                <label asp-for="Aula.Tipo" class="control-label"></label>
+                <input asp-for="Aula.Tipo" class="form-control" />
+                <span asp-validation-for="Aula.Tipo" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Sala" class="control-label"></label>
-                <input asp-for="Sala" class="form-control" />
-                <span asp-validation-for="Sala" class="text-danger"></span>
+                <label asp-for="Aula.SalaId" class="control-label"></label>
+                <select asp-for="Aula.SalaId" class="form-control" asp-items="@(new SelectList(Model.Salas, "Id", "Nome"))"></select>
+                <span asp-validation-for="Aula.SalaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Aula.ProfessorId" class="control-label"></label>
+                <select asp-for="Aula.ProfessorId" class="form-control" asp-items="@(new SelectList(Model.Salas, "Id", "Nome"))"></select>
+                <span asp-validation-for="Aula.ProfessorId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

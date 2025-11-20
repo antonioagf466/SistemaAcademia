@@ -24,7 +24,10 @@ namespace SistemaAcademia.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Aula != null ? 
-                          View(await _context.Aula.ToListAsync()) :
+                          View(await _context.Aula
+                          .Include(a => a.Professor)
+                          .Include(a => a.Sala)
+                          .ToListAsync()) :
                           Problem("Entity set 'SistemaAcademiaContext.Aula'  is null.");
         }
 
@@ -51,6 +54,7 @@ namespace SistemaAcademia.Controllers
         {
             var viewModel = new AulaFormViewModel();
             viewModel.Professors = _context.Professor.ToList();
+            viewModel.Salas = _context.Sala.ToList();
             return View(viewModel);
         }
 
@@ -59,7 +63,7 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Horario,Vagas,Tipo,Sala,ProfessorId")] Aula aula)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Horario,Vagas,Tipo,SalaId,ProfessorId")] Aula aula)
         {
             
                 _context.Add(aula);
@@ -82,6 +86,11 @@ namespace SistemaAcademia.Controllers
             {
                 return NotFound();
             }
+            AulaFormViewModel viewModel = new AulaFormViewModel();
+            viewModel.Aula = aula;
+            viewModel.Professors = _context.Professor.ToList();
+            viewModel.Salas = _context.Sala.ToList();
+           
             return View(aula);
         }
 
@@ -90,7 +99,7 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Horario,Vagas,Tipo,Sala")] Aula aula)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Horario,Vagas,Tipo,SalaId,ProfessorId")] Aula aula)
         {
             if (id != aula.Id)
             {

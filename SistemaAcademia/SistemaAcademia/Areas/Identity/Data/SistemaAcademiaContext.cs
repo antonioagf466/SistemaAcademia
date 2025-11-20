@@ -39,4 +39,5 @@ public class SistemaAcademiaContext : IdentityDbContext<SistemaAcademiaUser>
     public DbSet<SistemaAcademia.Models.Professor>? Professor { get; set; }
 
     public DbSet<SistemaAcademia.Models.Sala>? Sala { get; set; }
+    public object Aulas { get; internal set; }
 }
