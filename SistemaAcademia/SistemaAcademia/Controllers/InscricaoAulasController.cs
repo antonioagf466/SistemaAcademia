@@ -40,6 +40,8 @@ namespace SistemaAcademia.Controllers
             }
 
             var inscricaoAula = await _context.InscricaoAula
+                .Include(i => i.Aluno)
+                .Include(i => i.Aula)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (inscricaoAula == null)
             {
@@ -76,8 +78,12 @@ namespace SistemaAcademia.Controllers
             // Verificar se há vagas
             if (aula.Vagas <= 0)
             {
+                InscricaoAulaFormViewModel viewModel = new InscricaoAulaFormViewModel();
+                viewModel.InscricaoAula = inscricaoAula;
+                viewModel.Aulas = _context.Aula.ToList();
+                viewModel.Alunos = _context.Aluno.ToList();
                 ModelState.AddModelError(string.Empty, "Não há vagas disponíveis.");
-                return View(inscricaoAula);
+                return View(viewModel);
             }
 
             // Decrementar vaga
@@ -122,8 +128,6 @@ namespace SistemaAcademia.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(inscricaoAula);
@@ -142,8 +146,7 @@ namespace SistemaAcademia.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(inscricaoAula);
-        }
+
 
         // GET: InscricaoAula/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -171,6 +174,7 @@ namespace SistemaAcademia.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var inscricaoAula = await _context.InscricaoAula
+                .Include(i => i.Aluno)
                 .Include(i => i.Aula)
                 .FirstOrDefaultAsync(i => i.Id == id);
             if (inscricaoAula == null)

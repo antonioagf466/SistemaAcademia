@@ -93,8 +93,6 @@ namespace SistemaAcademia.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(professor);
@@ -112,8 +110,6 @@ namespace SistemaAcademia.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(professor);
         }
 
         // GET: Professores/Delete/5

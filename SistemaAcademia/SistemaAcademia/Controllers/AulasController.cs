@@ -40,6 +40,8 @@ namespace SistemaAcademia.Controllers
             }
 
             var aula = await _context.Aula
+                .Include(a => a.Professor)
+                .Include(a => a.Sala)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (aula == null)
             {
@@ -91,7 +93,7 @@ namespace SistemaAcademia.Controllers
             viewModel.Professors = _context.Professor.ToList();
             viewModel.Salas = _context.Sala.ToList();
            
-            return View(aula);
+            return View(viewModel);
         }
 
         // POST: Aulas/Edit/5
@@ -106,8 +108,7 @@ namespace SistemaAcademia.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+
                 try
                 {
                     _context.Update(aula);
@@ -125,8 +126,6 @@ namespace SistemaAcademia.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(aula);
         }
 
         // GET: Aulas/Delete/5
@@ -138,6 +137,8 @@ namespace SistemaAcademia.Controllers
             }
 
             var aula = await _context.Aula
+                .Include(a => a.Professor)
+                .Include(a => a.Sala)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (aula == null)
             {

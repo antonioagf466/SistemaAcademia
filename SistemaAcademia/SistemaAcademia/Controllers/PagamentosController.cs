@@ -39,6 +39,7 @@ namespace SistemaAcademia.Controllers
             }
 
             var pagamento = await _context.Pagamento
+                .Include(p => p.Aluno)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pagamento == null)
             {
@@ -86,7 +87,7 @@ namespace SistemaAcademia.Controllers
             PagamentoFormViewModel viewModel = new PagamentoFormViewModel();
             viewModel.Pagamento = pagamento;
             viewModel.Alunos = _context.Aluno.ToList();
-            return View(pagamento);
+            return View(viewModel);
         }
 
         // POST: Pagamentos/Edit/5
@@ -101,8 +102,6 @@ namespace SistemaAcademia.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(pagamento);
@@ -120,8 +119,6 @@ namespace SistemaAcademia.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(pagamento);
         }
 
         // GET: Pagamentos/Delete/5
@@ -133,6 +130,7 @@ namespace SistemaAcademia.Controllers
             }
 
             var pagamento = await _context.Pagamento
+                .Include(p => p.Aluno)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pagamento == null)
             {

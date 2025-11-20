@@ -1,4 +1,6 @@
-﻿namespace SistemaAcademia.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace SistemaAcademia.Models
 {
     public class Pagamento
     {
@@ -7,7 +9,7 @@
         public double Valor { get; set; }
         public string Forma { get; set;}
         public DateTime Data { get; private set; }
-
+        [Display(Name = "Aluno")]
         public int AlunoId { get; set; }
 
         public Aluno Aluno { get; set; }

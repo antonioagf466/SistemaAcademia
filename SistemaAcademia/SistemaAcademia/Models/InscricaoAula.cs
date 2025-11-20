@@ -7,10 +7,11 @@ namespace SistemaAcademia.Models
         public int Id { get; set; }
         [DataType(DataType.Date)]
         public DateTime DataInscricao { get; private set; }
-
+        [Display(Name = "Aluno")]
         public int AlunoId { get; set; }
 
         public Aluno Aluno { get; set; }
+        [Display(Name = "Aula")]
         public int AulaId { get; set; }
         public Aula Aula { get; set; }
 

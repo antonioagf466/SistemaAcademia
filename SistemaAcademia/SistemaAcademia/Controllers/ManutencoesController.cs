@@ -39,6 +39,7 @@ namespace SistemaAcademia.Controllers
             }
 
             var manutencao = await _context.Manutencao
+                .Include(m => m.Equipamento)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (manutencao == null)
             {
@@ -100,8 +101,6 @@ namespace SistemaAcademia.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(manutencao);
@@ -119,8 +118,6 @@ namespace SistemaAcademia.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(manutencao);
         }
 
         // GET: Manutencoes/Delete/5
@@ -132,6 +129,7 @@ namespace SistemaAcademia.Controllers
             }
 
             var manutencao = await _context.Manutencao
+                .Include(m => m.Equipamento)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (manutencao == null)
             {

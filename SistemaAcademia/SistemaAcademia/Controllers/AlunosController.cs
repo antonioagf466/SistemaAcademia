@@ -39,6 +39,7 @@ namespace SistemaAcademia.Controllers
             }
 
             var aluno = await _context.Aluno
+                .Include(a => a.Plano)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (aluno == null)
             {
@@ -86,7 +87,7 @@ namespace SistemaAcademia.Controllers
             AlunoFormViewModel viewModel = new AlunoFormViewModel();
             viewModel.Aluno = aluno;
             viewModel.Planos = _context.Plano.ToList();
-            return View(aluno);
+            return View(viewModel);
         }
 
         // POST: Alunos/Edit/5
@@ -101,8 +102,6 @@ namespace SistemaAcademia.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(aluno);
@@ -120,8 +119,7 @@ namespace SistemaAcademia.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(aluno);
+
         }
 
         // GET: Alunos/Delete/5
@@ -133,6 +131,7 @@ namespace SistemaAcademia.Controllers
             }
 
             var aluno = await _context.Aluno
+                .Include(a => a.Plano)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (aluno == null)
             {

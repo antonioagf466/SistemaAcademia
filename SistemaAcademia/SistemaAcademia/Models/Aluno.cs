@@ -12,9 +12,12 @@ namespace SistemaAcademia.Models
         public string Email { get; set; }
         public string Telefone { get; set; }
         [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataNasc { get; set; }
         public string Matricula { get; set; }
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}")]
         public DateTime DataCriacao { get; private set; }
+        [Display(Name = "Plano")]
         public int PlanoId { get; set; }
 
         public Plano Plano { get; set; }
