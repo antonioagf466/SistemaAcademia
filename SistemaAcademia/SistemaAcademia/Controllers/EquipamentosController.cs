@@ -19,7 +19,7 @@ namespace SistemaAcademia.Controllers
         public async Task<IActionResult> Index()
         {
             var list = _context.Equipamento!
-                .Include(e => e.Sala); // ⬅ carregar sala
+                .Include(e => e.Sala);
             return View(await list.ToListAsync());
         }
 
@@ -30,7 +30,7 @@ namespace SistemaAcademia.Controllers
                 return NotFound();
 
             var equipamento = await _context.Equipamento
-                .Include(e => e.Sala) // ⬅ carregar sala
+                .Include(e => e.Sala)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (equipamento == null)
@@ -112,7 +112,7 @@ namespace SistemaAcademia.Controllers
                 return NotFound();
 
             var equipamento = await _context.Equipamento
-                .Include(e => e.Sala) // ⬅ carregar sala
+                .Include(e => e.Sala)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (equipamento == null)

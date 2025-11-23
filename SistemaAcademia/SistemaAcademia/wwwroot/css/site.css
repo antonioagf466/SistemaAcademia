@@ -1,18 +1,411 @@
-html {
-  font-size: 14px;
+:root {
+    --primary: #ff6b35;
+    --secondary: #2c3e50;
+    --accent: #f39c12;
+    --light: #ecf0f1;
+    --dark: #2c3e50;
 }
 
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+/* ============================
+   HERO SECTION
+   ============================ */
+
+.hero-section {
+    background: linear-gradient(rgba(44, 62, 80, 0.8), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1534438327276-14e5300c3a48?ixlib=rb-4.0.3') center/cover;
+    color: white;
+    padding: 150px 0 100px;
 }
 
-html {
-  position: relative;
-  min-height: 100%;
+/* ============================
+   BOTÕES
+   ============================ */
+
+.btn-primary {
+    background-color: var(--primary);
+    border-color: var(--primary);
+    padding: 12px 30px;
+    font-weight: 600;
 }
 
-body {
-  margin-bottom: 60px;
+.btn-primary:hover {
+    background-color: #e55a2b;
+    border-color: #e55a2b;
+}
+
+.btn-outline-primary {
+    background: transparent;
+    border: 1px solid var(--primary);
+    color: var(--primary);
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-primary:hover {
+    background: var(--primary);
+    color: #fff;
+
+}
+
+/* ============================
+   COMPONENTES COMUNS
+   ============================ */
+
+.feature-icon {
+    font-size: 3rem;
+    color: var(--primary);
+    margin-bottom: 1rem;
+}
+
+.section-title {
+    color: var(--secondary);
+    position: relative;
+    padding-bottom: 15px;
+    margin-bottom: 30px;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--primary);
+}
+
+/* ============================
+   CLASS CARDS
+   ============================ */
+
+.class-card {
+    border: none;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    margin-bottom: 30px;
+}
+
+.class-card:hover {
+    transform: translateY(-10px);
+
+}
+
+.class-card img {
+    height: 200px;
+    object-fit: cover;
+}
+
+/* ============================
+   PRICE CARDS
+   ============================ */
+
+.price-card {
+    border: 3px solid var(--light);
+    border-radius: 15px;
+    padding: 30px;
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.price-card.featured {
+    border-color: var(--primary);
+    transform: scale(1.05);
+}
+
+.price-card:hover {
+    border-color: var(--primary);
+}
+
+.price {
+    font-size: 3rem;
+    color: var(--primary);
+    font-weight: bold;
+}
+
+/* ============================
+   NAV LINKS GERAIS
+   ============================ */
+
+.nav-link {
+    color: var(--dark);
+    font-weight: 500;
+    margin: 0 10px;
+}
+
+.nav-link:hover {
+    color: var(--primary);
+}
+
+/* ============================
+   TESTIMONIAL
+   ============================ */
+
+.testimonial-card {
+    background: var(--light);
+    border-radius: 15px;
+    padding: 30px;
+    margin: 15px;
+}
+
+/* ============================
+   FOOTER
+   ============================ */
+
+.footer {
+    background: var(--secondary);
+    color: white;
+    padding: 50px 0 20px;
+}
+
+/* ============================
+   LAYOUT GERAL DO PAINEL
+   ============================ */
+
+.dashboard-body {
+    background: #f5f7fb;
+}
+
+.dashboard-main {
+    min-height: calc(100vh - 120px);
+    padding-bottom: 20px;
+}
+
+.dashboard-container {
+    padding-top: 10px;
+    padding-bottom: 20px;
+}
+
+/* ============================
+   NAVBAR / HEADER
+   ============================ */
+
+.dashboard-navbar {
+    background: var(--secondary);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.dashboard-navbar .navbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #ecf0f1;
+    font-weight: 700;
+}
+
+.dashboard-navbar .navbar-brand:hover {
+        color: #ffffff;
+}
+
+.brand-badge {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.brand-text {
+    letter-spacing: 0.04em;
+}
+
+/* Menu superior */
+.dashboard-navbar .navbar-nav .nav-link {
+    color: rgba(236, 240, 241, 0.9);
+    font-weight: 500;
+    margin: 0 4px;
+    border-radius: 999px;
+    padding: 6px 12px;
+    transition: background 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.dashboard-navbar .navbar-nav .nav-link:hover {
+    background: rgba(236, 240, 241, 0.12);
+    color: #ffffff;
+    transform: translateY(-1px);
+    }
+
+.dashboard-navbar .navbar-nav .nav-link.active {
+    background: linear-gradient(135deg, var(--primary), var(--accent));
+    color: #ffffff;
+    }
+
+/* Usuário */
+.dashboard-user-pill {
+    background: rgba(236, 240, 241, 0.12);
+    border-radius: 999px;
+    padding: 5px 10px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--primary);
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: .8rem;
+    font-weight: 700;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #ecf0f1;
+    line-height: 1.1;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: rgba(236, 240, 241, 0.7);
+}
+
+/* ============================
+   TÍTULOS E SEÇÕES
+   ============================ */
+
+.dashboard-section-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--secondary);
+    margin-bottom: 0.25rem;
+}
+
+.dashboard-section-subtitle {
+    font-size: 0.85rem;
+    color: rgba(44, 62, 80, 0.6);
+    margin-bottom: 1rem;
+}
+
+/* ============================
+   CARDS DE ESTATÍSTICAS
+   ============================ */
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.stats-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 16px 18px 14px;
+    box-shadow: 0 10px 24px rgba(44, 62, 80, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+.stats-card::before {
+    content: '';
+    position: absolute;
+    top: -30px;
+    right: -30px;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle at center, rgba(255, 107, 53, 0.25), transparent);
+}
+
+.stats-card-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: rgba(44, 62, 80, 0.7);
+}
+
+.stats-card-value {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--secondary);
+}
+
+.stats-card-extra {
+    font-size: 0.8rem;
+    color: rgba(44, 62, 80, 0.6);
+    margin-top: 4px;
+}
+
+/* ============================
+   PAINEL / CRUDs
+   ============================ */
+
+.panel-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 18px 18px 16px;
+    box-shadow: 0 10px 24px rgba(44, 62, 80, 0.05);
+    margin-bottom: 22px;
+}
+
+.panel-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.panel-card-title {
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--secondary);
+    margin: 0;
+}
+
+.panel-card-subtitle {
+    font-size: 0.8rem;
+    color: rgba(44, 62, 80, 0.7);
+}
+
+.table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.table-dashboard {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.table-dashboard thead {
+    background: rgba(44, 62, 80, 0.03);
+}
+
+.table-dashboard th,
+.table-dashboard td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(44, 62, 80, 0.07);
+    text-align: left;
+}
+
+.table-dashboard th {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: rgba(44, 62, 80, 0.8);
+}
+
+    .table-dashboard tbody tr:hover {
+        background: rgba(236, 240, 241, 0.6);
+    }
+
+/* ============================
+   UTILITÁRIOS
+   ============================ */
+
+.text-muted-sm {
+    font-size: 0.8rem;
+    color: rgba(44, 62, 80, 0.6);
 }
