@@ -39,6 +39,13 @@
                 <span asp-validation-for="Status" class="text-danger"></span>
             </div>
             <div class="form-group">
+                <label asp-for="SalaId" class="control-label"></label>
+                <select asp-for="SalaId" class="form-control" asp-items='ViewData["SalaId"] as SelectList'>
+                    <option value="">-- Selecione uma Sala --</option>
+                </select>
+                <span asp-validation-for="SalaId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>

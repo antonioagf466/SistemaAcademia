@@ -11,5 +11,8 @@ namespace SistemaAcademia.Models
         [DataType(DataType.Date)]
         public DateTime DataAquisicao { get; set; }
         public string Status { get; set; }
+        [Display(Name = "Sala")]
+        public int SalaId { get; set; }
+        public Sala? Sala { get; set; }
     }
 }
