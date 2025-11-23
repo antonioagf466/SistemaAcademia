@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaAcademia.Data;
@@ -22,25 +18,23 @@ namespace SistemaAcademia.Controllers
         // GET: Equipamentos
         public async Task<IActionResult> Index()
         {
-              return _context.Equipamento != null ? 
-                          View(await _context.Equipamento.ToListAsync()) :
-                          Problem("Entity set 'SistemaAcademiaContext.Equipamento'  is null.");
+            var list = _context.Equipamento!
+                .Include(e => e.Sala); // ⬅ carregar sala
+            return View(await list.ToListAsync());
         }
 
         // GET: Equipamentos/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Equipamento == null)
-            {
+            if (id == null)
                 return NotFound();
-            }
 
             var equipamento = await _context.Equipamento
+                .Include(e => e.Sala) // ⬅ carregar sala
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (equipamento == null)
-            {
                 return NotFound();
-            }
 
             return View(equipamento);
         }
@@ -48,15 +42,14 @@ namespace SistemaAcademia.Controllers
         // GET: Equipamentos/Create
         public IActionResult Create()
         {
+            ViewData["SalaId"] = new SelectList(_context.Sala, "Id", "Nome");
             return View();
         }
 
         // POST: Equipamentos/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NumeroPatrimonio,Nome,Marca,DataAquisicao,Status")] Equipamento equipamento)
+        public async Task<IActionResult> Create([Bind("Id,NumeroPatrimonio,Nome,Marca,DataAquisicao,Status,SalaId")] Equipamento equipamento)
         {
             if (ModelState.IsValid)
             {
@@ -64,36 +57,32 @@ namespace SistemaAcademia.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["SalaId"] = new SelectList(_context.Sala, "Id", "Nome", equipamento.SalaId);
             return View(equipamento);
         }
 
         // GET: Equipamentos/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Equipamento == null)
-            {
+            if (id == null)
                 return NotFound();
-            }
 
             var equipamento = await _context.Equipamento.FindAsync(id);
             if (equipamento == null)
-            {
                 return NotFound();
-            }
+
+            ViewData["SalaId"] = new SelectList(_context.Sala, "Id", "Nome", equipamento.SalaId);
             return View(equipamento);
         }
 
         // POST: Equipamentos/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NumeroPatrimonio,Nome,Marca,DataAquisicao,Status")] Equipamento equipamento)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NumeroPatrimonio,Nome,Marca,DataAquisicao,Status,SalaId")] Equipamento equipamento)
         {
             if (id != equipamento.Id)
-            {
                 return NotFound();
-            }
 
             if (ModelState.IsValid)
             {
@@ -105,33 +94,29 @@ namespace SistemaAcademia.Controllers
                 catch (DbUpdateConcurrencyException)
                 {
                     if (!EquipamentoExists(equipamento.Id))
-                    {
                         return NotFound();
-                    }
                     else
-                    {
                         throw;
-                    }
                 }
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["SalaId"] = new SelectList(_context.Sala, "Id", "Nome", equipamento.SalaId);
             return View(equipamento);
         }
 
         // GET: Equipamentos/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Equipamento == null)
-            {
+            if (id == null)
                 return NotFound();
-            }
 
             var equipamento = await _context.Equipamento
+                .Include(e => e.Sala) // ⬅ carregar sala
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (equipamento == null)
-            {
                 return NotFound();
-            }
 
             return View(equipamento);
         }
@@ -141,23 +126,18 @@ namespace SistemaAcademia.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Equipamento == null)
-            {
-                return Problem("Entity set 'SistemaAcademiaContext.Equipamento'  is null.");
-            }
             var equipamento = await _context.Equipamento.FindAsync(id);
+
             if (equipamento != null)
-            {
                 _context.Equipamento.Remove(equipamento);
-            }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool EquipamentoExists(int id)
         {
-          return (_context.Equipamento?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Equipamento?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
