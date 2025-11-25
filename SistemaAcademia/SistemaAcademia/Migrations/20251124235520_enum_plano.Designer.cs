@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SistemaAcademia.Data;
 
@@ -11,9 +12,10 @@ using SistemaAcademia.Data;
 namespace SistemaAcademia.Migrations
 {
     [DbContext(typeof(SistemaAcademiaContext))]
-    partial class SistemaAcademiaContextModelSnapshot : ModelSnapshot
+    [Migration("20251124235520_enum_plano")]
+    partial class enum_plano
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -456,10 +458,9 @@ namespace SistemaAcademia.Migrations
                     b.Property<int>("AulasSemana")
                         .HasColumnType("int");
 
-                    b.Property<string>("Nome")
-                        .IsRequired()
+                    b.Property<int>("Nome")
                         .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                        .HasColumnType("int");
 
                     b.Property<int>("Periodicidade")
                         .HasColumnType("int");

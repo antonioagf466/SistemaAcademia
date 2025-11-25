@@ -30,7 +30,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Especialidade" class="control-label"></label>
-                <input asp-for="Especialidade" class="form-control" />
+                <select asp-for="Especialidade" class="form-control" asp-items="Html.GetEnumSelectList<EnumEspecialidade>()"></select>
                 <span asp-validation-for="Especialidade" class="text-danger"></span>
             </div>
             <div class="form-group">

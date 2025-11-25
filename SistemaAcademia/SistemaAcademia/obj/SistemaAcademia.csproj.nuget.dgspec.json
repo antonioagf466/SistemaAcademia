@@ -1,24 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\PC\\source\\repos\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia.csproj": {}
+    "C:\\trabalho\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia.csproj": {}
   },
   "projects": {
-    "C:\\Users\\PC\\source\\repos\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia.csproj": {
+    "C:\\trabalho\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\PC\\source\\repos\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia.csproj",
+        "projectUniqueName": "C:\\trabalho\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia.csproj",
         "projectName": "SistemaAcademia",
-        "projectPath": "C:\\Users\\PC\\source\\repos\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia.csproj",
-        "packagesPath": "C:\\Users\\PC\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\PC\\source\\repos\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia\\obj\\",
+        "projectPath": "C:\\trabalho\\SistemaAcademia\\SistemaAcademia\\SistemaAcademia.csproj",
+        "packagesPath": "C:\\Users\\ANTONIOAUGUSTOGERALD\\.nuget\\packages\\",
+        "outputPath": "C:\\trabalho\\SistemaAcademia\\SistemaAcademia\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-        ],
         "configFilePaths": [
-          "C:\\Users\\PC\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Users\\ANTONIOAUGUSTOGERALD\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -38,13 +34,7 @@
           "warnAsError": [
             "NU1605"
           ]
-        },
-        "restoreAuditProperties": {
-          "enableAudit": "true",
-          "auditLevel": "low",
-          "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.300"
+        }
       },
       "frameworks": {
         "net6.0": {
@@ -92,7 +82,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.306\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.202\\RuntimeIdentifierGraph.json"
         }
       }
     }

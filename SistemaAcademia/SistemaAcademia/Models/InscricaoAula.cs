@@ -6,6 +6,7 @@ namespace SistemaAcademia.Models
     {
         public int Id { get; set; }
         [DataType(DataType.Date)]
+        [Display(Name = "Data da inscrição")]
         public DateTime DataInscricao { get; private set; }
         [Display(Name = "Aluno")]
         public int AlunoId { get; set; }
