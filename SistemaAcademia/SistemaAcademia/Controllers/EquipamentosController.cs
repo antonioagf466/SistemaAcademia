@@ -31,6 +31,7 @@ namespace SistemaAcademia.Controllers
 
             var equipamento = await _context.Equipamento
                 .Include(e => e.Sala)
+                .Include(e => e.Manutencoes)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (equipamento == null)

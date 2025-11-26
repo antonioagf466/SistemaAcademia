@@ -36,6 +36,7 @@ namespace SistemaAcademia.Controllers
             }
 
             var sala = await _context.Sala
+                .Include(e => e.Equipamentos)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (sala == null)
             {
