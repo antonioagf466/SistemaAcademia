@@ -21,6 +21,7 @@ namespace SistemaAcademia.Models
         [Display(Name = "Sala")]
         public int SalaId { get; set; }
         public Sala? Sala { get; set; }
+        public List<Manutencao> Manutencoes { get; set; } = new List<Manutencao>();
     }
     
     public enum EnumStatus : int
