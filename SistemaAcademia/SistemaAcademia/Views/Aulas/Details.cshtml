@@ -50,5 +50,40 @@
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+
+</div>
+<h4>Alunos inscritos nesta aula</h4>
+<hr />
+
+@if (Model.Alunos == null || !Model.Alunos.Any())
+{
+    <p>Aula não está com cadastrado de nenhuma Aluno.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>Matricula</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var au in Model.Alunos)
+            {
+                <tr>
+                    <td>@au.Nome</td>
+                    <td>@au.Matricula</td>
+                    <td>
+                        <a asp-controller="Alunos" asp-action="Details" asp-route-id="@au.Id">Detalhes</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div>
+
     <a asp-action="Index">Back to List</a>
 </div>

@@ -35,21 +35,41 @@ namespace SistemaAcademia.Controllers
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null || _context.Aula == null)
-            {
                 return NotFound();
-            }
 
+            // Carrega a aula
             var aula = await _context.Aula
                 .Include(a => a.Professor)
                 .Include(a => a.Sala)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (aula == null)
-            {
                 return NotFound();
+
+            // Carrega alunos via InscricaoAula (filtrando por AulaId)
+            if (_context.InscricaoAula != null)
+            {
+                var inscricoes = await _context.InscricaoAula
+                    .Where(i => i.AulaId == id)
+                    .Include(i => i.Aluno)
+                    .ToListAsync();
+
+                aula.Alunos = inscricoes
+                    .Where(i => i.Aluno != null)
+                    .Select(i => i.Aluno!)
+                    .ToList();
+            }
+            else
+            {
+                aula.Alunos = new List<Aluno>();
             }
 
             return View(aula);
         }
+
+
+
+
 
         // GET: Aulas/Create
         public IActionResult Create()
