@@ -38,6 +38,7 @@ namespace SistemaAcademia.Models
             Matricula = GerarCodigoMatricula( DataCriacao);
 
         }
+        public List<Aula> Aulas { get; set; } = new List<Aula>();
 
         // Função para gerar o código de matrícula
         public static string GerarCodigoMatricula( DateTime DataCriacao)
