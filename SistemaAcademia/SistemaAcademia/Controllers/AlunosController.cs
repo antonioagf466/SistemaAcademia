@@ -38,16 +38,40 @@ namespace SistemaAcademia.Controllers
                 return NotFound();
             }
 
+            // Carrega o aluno (com plano)
             var aluno = await _context.Aluno
                 .Include(a => a.Plano)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (aluno == null)
             {
                 return NotFound();
             }
 
+            // Carrega as inscrições e inclui Aula -> Professor e Sala
+            if (_context.InscricaoAula != null)
+            {
+                var inscricoes = await _context.InscricaoAula
+                    .Where(i => i.AlunoId == id)
+                    .Include(i => i.Aula)
+                        .ThenInclude(au => au.Professor)
+                    .Include(i => i.Aula)
+                        .ThenInclude(au => au.Sala)
+                    .ToListAsync();
+
+                aluno.Aulas = inscricoes
+                    .Where(i => i.Aula != null)
+                    .Select(i => i.Aula!)
+                    .ToList();
+            }
+            else
+            {
+                aluno.Aulas = new List<Aula>();
+            }
+
             return View(aluno);
         }
+        
 
         // GET: Alunos/Create
         public IActionResult Create()

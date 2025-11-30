@@ -48,6 +48,12 @@
         </dd>
     </dl>
 </div>
+
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a>
+
+</div>
+
 <h4>Manutenções</h4>
 <hr />
 
@@ -76,6 +82,9 @@ else
                     <td>@m.Tecnico</td>
                     <td>@m.Observacao</td>
                     <td>R$ @m.Custo.ToString("F2")</td>
+                    <td>
+                        <a asp-controller="Manutencoes" asp-action="Details" asp-route-id="@m.Id">Detalhes</a>
+                    </td>
                 </tr>
             }
         </tbody>
@@ -83,6 +92,5 @@ else
 }
 
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
