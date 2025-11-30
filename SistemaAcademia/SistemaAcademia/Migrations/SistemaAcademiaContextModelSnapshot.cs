@@ -232,15 +232,13 @@ namespace SistemaAcademia.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
-
                     b.Property<int?>("AulaId")
                         .HasColumnType("int");
 
                     b.Property<string>("Cpf")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<DateTime>("DataCriacao")
                         .HasColumnType("datetime2");
@@ -252,17 +250,28 @@ namespace SistemaAcademia.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Nome")
+                    b.Property<string>("Matricula")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Nome")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<int>("PlanoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Telefone")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("AulaId");
+
+                    b.HasIndex("PlanoId");
 
                     b.ToTable("Aluno");
                 });
@@ -281,18 +290,17 @@ namespace SistemaAcademia.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<int>("ProfessorId")
                         .HasColumnType("int");
 
-                    b.Property<string>("Sala")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SalaId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
 
                     b.Property<int>("Vagas")
                         .HasColumnType("int");
@@ -300,6 +308,8 @@ namespace SistemaAcademia.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ProfessorId");
+
+                    b.HasIndex("SalaId");
 
                     b.ToTable("Aula");
                 });
@@ -317,21 +327,28 @@ namespace SistemaAcademia.Migrations
 
                     b.Property<string>("Marca")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<string>("NumeroPatrimonio")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("SalaId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("SalaId");
 
                     b.ToTable("Equipamento");
                 });
@@ -344,10 +361,20 @@ namespace SistemaAcademia.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("AlunoId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AulaId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("DataInscricao")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AlunoId");
+
+                    b.HasIndex("AulaId");
 
                     b.ToTable("InscricaoAula");
                 });
@@ -366,6 +393,9 @@ namespace SistemaAcademia.Migrations
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("EquipamentoId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Observacao")
                         .HasColumnType("nvarchar(max)");
 
@@ -373,42 +403,14 @@ namespace SistemaAcademia.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("EquipamentoId");
 
                     b.ToTable("Manutencao");
-                });
-
-            modelBuilder.Entity("SistemaAcademia.Models.Matricula", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<int>("AlunoId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTime>("DataInicio")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("DataVencimento")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("PlanoId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AlunoId");
-
-                    b.HasIndex("PlanoId");
-
-                    b.ToTable("Matricula");
                 });
 
             modelBuilder.Entity("SistemaAcademia.Models.Pagamento", b =>
@@ -419,21 +421,26 @@ namespace SistemaAcademia.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
+                    b.Property<int>("AlunoId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Data")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Forma")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Forma")
+                        .HasColumnType("int");
 
                     b.Property<string>("NumeroRecibo")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.Property<double>("Valor")
                         .HasColumnType("float");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AlunoId");
 
                     b.ToTable("Pagamento");
                 });
@@ -446,19 +453,16 @@ namespace SistemaAcademia.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
-
                     b.Property<int>("AulasSemana")
                         .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Periodicidade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Periodicidade")
+                        .HasColumnType("int");
 
                     b.Property<double>("Valor")
                         .HasColumnType("float");
@@ -476,24 +480,22 @@ namespace SistemaAcademia.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<bool>("Ativo")
-                        .HasColumnType("bit");
-
                     b.Property<string>("Cref")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(8)
+                        .HasColumnType("nvarchar(8)");
 
                     b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Especialidade")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Especialidade")
+                        .HasColumnType("int");
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
                     b.HasKey("Id");
 
@@ -510,11 +512,11 @@ namespace SistemaAcademia.Migrations
 
                     b.Property<string>("Nome")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
 
-                    b.Property<string>("Tipo")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
 
                     b.HasKey("Id");
 
@@ -577,26 +579,6 @@ namespace SistemaAcademia.Migrations
                     b.HasOne("SistemaAcademia.Models.Aula", null)
                         .WithMany("Alunos")
                         .HasForeignKey("AulaId");
-                });
-
-            modelBuilder.Entity("SistemaAcademia.Models.Aula", b =>
-                {
-                    b.HasOne("SistemaAcademia.Models.Professor", "Professor")
-                        .WithMany()
-                        .HasForeignKey("ProfessorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Professor");
-                });
-
-            modelBuilder.Entity("SistemaAcademia.Models.Matricula", b =>
-                {
-                    b.HasOne("SistemaAcademia.Models.Aluno", "Aluno")
-                        .WithMany()
-                        .HasForeignKey("AlunoId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.HasOne("SistemaAcademia.Models.Plano", "Plano")
                         .WithMany()
@@ -604,14 +586,93 @@ namespace SistemaAcademia.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Aluno");
-
                     b.Navigation("Plano");
                 });
 
             modelBuilder.Entity("SistemaAcademia.Models.Aula", b =>
                 {
+                    b.HasOne("SistemaAcademia.Models.Professor", "Professor")
+                        .WithMany("Aulas")
+                        .HasForeignKey("ProfessorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SistemaAcademia.Models.Sala", "Sala")
+                        .WithMany()
+                        .HasForeignKey("SalaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Professor");
+
+                    b.Navigation("Sala");
+                });
+
+            modelBuilder.Entity("SistemaAcademia.Models.Equipamento", b =>
+                {
+                    b.HasOne("SistemaAcademia.Models.Sala", "Sala")
+                        .WithMany("Equipamentos")
+                        .HasForeignKey("SalaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Sala");
+                });
+
+            modelBuilder.Entity("SistemaAcademia.Models.InscricaoAula", b =>
+                {
+                    b.HasOne("SistemaAcademia.Models.Aluno", "Aluno")
+                        .WithMany()
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SistemaAcademia.Models.Aula", "Aula")
+                        .WithMany()
+                        .HasForeignKey("AulaId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Aluno");
+
+                    b.Navigation("Aula");
+                });
+
+            modelBuilder.Entity("SistemaAcademia.Models.Manutencao", b =>
+                {
+                    b.HasOne("SistemaAcademia.Models.Equipamento", "Equipamento")
+                        .WithMany()
+                        .HasForeignKey("EquipamentoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Equipamento");
+                });
+
+            modelBuilder.Entity("SistemaAcademia.Models.Pagamento", b =>
+                {
+                    b.HasOne("SistemaAcademia.Models.Aluno", "Aluno")
+                        .WithMany()
+                        .HasForeignKey("AlunoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Aluno");
+                });
+
+            modelBuilder.Entity("SistemaAcademia.Models.Aula", b =>
+                {
                     b.Navigation("Alunos");
+                });
+
+            modelBuilder.Entity("SistemaAcademia.Models.Professor", b =>
+                {
+                    b.Navigation("Aulas");
+                });
+
+            modelBuilder.Entity("SistemaAcademia.Models.Sala", b =>
+                {
+                    b.Navigation("Equipamentos");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaAcademia.Data;
 using SistemaAcademia.Models;
+using SistemaAcademia.Models.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SistemaAcademia.Controllers
 {
@@ -23,7 +24,10 @@ namespace SistemaAcademia.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.InscricaoAula != null ? 
-                          View(await _context.InscricaoAula.ToListAsync()) :
+                          View(await _context.InscricaoAula
+                          .Include(i => i.Aluno)
+                          .Include(i => i.Aula)
+                          .ToListAsync()) :
                           Problem("Entity set 'SistemaAcademiaContext.InscricaoAula'  is null.");
         }
 
@@ -36,6 +40,8 @@ namespace SistemaAcademia.Controllers
             }
 
             var inscricaoAula = await _context.InscricaoAula
+                .Include(i => i.Aluno)
+                .Include(i => i.Aula)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (inscricaoAula == null)
             {
@@ -48,7 +54,10 @@ namespace SistemaAcademia.Controllers
         // GET: InscricaoAulas/Create
         public IActionResult Create()
         {
-            return View();
+            var viewModel = new InscricaoAulaFormViewModel();
+            viewModel.Aulas = _context.Aula.ToList();
+            viewModel.Alunos = _context.Aluno.ToList();
+            return View(viewModel);
         }
 
         // POST: InscricaoAulas/Create
@@ -56,15 +65,35 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DataInscricao")] InscricaoAula inscricaoAula)
+        public async Task<IActionResult> Create([Bind("Id,DataInscricao,AlunoId,AulaId")] InscricaoAula inscricaoAula)
         {
-            if (ModelState.IsValid)
+
+            // Carregar a aula
+            var aula = await _context.Aula.FindAsync(inscricaoAula.AulaId);
+            if (aula == null)
             {
-                _context.Add(inscricaoAula);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
-            return View(inscricaoAula);
+
+            // Verificar se há vagas
+            if (aula.Vagas <= 0)
+            {
+                InscricaoAulaFormViewModel viewModel = new InscricaoAulaFormViewModel();
+                viewModel.InscricaoAula = inscricaoAula;
+                viewModel.Aulas = _context.Aula.ToList();
+                viewModel.Alunos = _context.Aluno.ToList();
+                ModelState.AddModelError(string.Empty, "Não há vagas disponíveis.");
+                return View(viewModel);
+            }
+
+            // Decrementar vaga
+            aula.Vagas--;
+
+            _context.Add(inscricaoAula);
+            await _context.SaveChangesAsync();
+            return RedirectToAction(nameof(Index));
+
+
         }
 
         // GET: InscricaoAulas/Edit/5
@@ -80,7 +109,11 @@ namespace SistemaAcademia.Controllers
             {
                 return NotFound();
             }
-            return View(inscricaoAula);
+            InscricaoAulaFormViewModel viewModel = new InscricaoAulaFormViewModel();
+            viewModel.InscricaoAula = inscricaoAula;
+            viewModel.Aulas = _context.Aula.ToList();
+            viewModel.Alunos = _context.Aluno.ToList();
+            return View(viewModel);
         }
 
         // POST: InscricaoAulas/Edit/5
@@ -88,15 +121,13 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DataInscricao")] InscricaoAula inscricaoAula)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,DataInscricao,AlunoId,AulaId")] InscricaoAula inscricaoAula)
         {
             if (id != inscricaoAula.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(inscricaoAula);
@@ -115,18 +146,19 @@ namespace SistemaAcademia.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(inscricaoAula);
-        }
 
-        // GET: InscricaoAulas/Delete/5
+
+        // GET: InscricaoAula/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.InscricaoAula == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
             var inscricaoAula = await _context.InscricaoAula
+                .Include(i => i.Aluno)
+                .Include(i => i.Aula)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (inscricaoAula == null)
             {
@@ -136,24 +168,28 @@ namespace SistemaAcademia.Controllers
             return View(inscricaoAula);
         }
 
-        // POST: InscricaoAulas/Delete/5
+        // POST: InscricaoAula/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.InscricaoAula == null)
+            var inscricaoAula = await _context.InscricaoAula
+                .Include(i => i.Aluno)
+                .Include(i => i.Aula)
+                .FirstOrDefaultAsync(i => i.Id == id);
+            if (inscricaoAula == null)
             {
-                return Problem("Entity set 'SistemaAcademiaContext.InscricaoAula'  is null.");
+                return NotFound();
             }
-            var inscricaoAula = await _context.InscricaoAula.FindAsync(id);
-            if (inscricaoAula != null)
-            {
-                _context.InscricaoAula.Remove(inscricaoAula);
-            }
-            
+
+            // Incrementar a vaga
+            inscricaoAula.Aula.Vagas++;
+
+            _context.InscricaoAula.Remove(inscricaoAula);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
 
         private bool InscricaoAulaExists(int id)
         {

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaAcademia.Data;
 using SistemaAcademia.Models;
+using SistemaAcademia.Models.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SistemaAcademia.Controllers
 {
@@ -23,7 +24,9 @@ namespace SistemaAcademia.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Pagamento != null ? 
-                          View(await _context.Pagamento.ToListAsync()) :
+                          View(await _context.Pagamento
+                          .Include(p => p.Aluno)
+                          .ToListAsync()) :
                           Problem("Entity set 'SistemaAcademiaContext.Pagamento'  is null.");
         }
 
@@ -36,6 +39,7 @@ namespace SistemaAcademia.Controllers
             }
 
             var pagamento = await _context.Pagamento
+                .Include(p => p.Aluno)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pagamento == null)
             {
@@ -48,7 +52,9 @@ namespace SistemaAcademia.Controllers
         // GET: Pagamentos/Create
         public IActionResult Create()
         {
-            return View();
+            var viewModel = new PagamentoFormViewModel();
+            viewModel.Alunos = _context.Aluno.ToList();
+            return View(viewModel);
         }
 
         // POST: Pagamentos/Create
@@ -56,15 +62,13 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NumeroRecibo,Valor,Forma,Data")] Pagamento pagamento)
+        public async Task<IActionResult> Create([Bind("Id,NumeroRecibo,Valor,Forma,Data,AlunoId")] Pagamento pagamento)
         {
-            if (ModelState.IsValid)
-            {
+
                 _context.Add(pagamento);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(pagamento);
+            
         }
 
         // GET: Pagamentos/Edit/5
@@ -80,7 +84,10 @@ namespace SistemaAcademia.Controllers
             {
                 return NotFound();
             }
-            return View(pagamento);
+            PagamentoFormViewModel viewModel = new PagamentoFormViewModel();
+            viewModel.Pagamento = pagamento;
+            viewModel.Alunos = _context.Aluno.ToList();
+            return View(viewModel);
         }
 
         // POST: Pagamentos/Edit/5
@@ -88,15 +95,13 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NumeroRecibo,Valor,Forma,Data")] Pagamento pagamento)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NumeroRecibo,Valor,Forma,Data,AlunoId")] Pagamento pagamento)
         {
             if (id != pagamento.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(pagamento);
@@ -114,8 +119,6 @@ namespace SistemaAcademia.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(pagamento);
         }
 
         // GET: Pagamentos/Delete/5
@@ -127,6 +130,7 @@ namespace SistemaAcademia.Controllers
             }
 
             var pagamento = await _context.Pagamento
+                .Include(p => p.Aluno)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (pagamento == null)
             {

@@ -1,12 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using SistemaAcademia.Data;
 using SistemaAcademia.Models;
+using SistemaAcademia.Models.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace SistemaAcademia.Controllers
 {
@@ -23,7 +24,9 @@ namespace SistemaAcademia.Controllers
         public async Task<IActionResult> Index()
         {
               return _context.Aluno != null ? 
-                          View(await _context.Aluno.ToListAsync()) :
+                          View(await _context.Aluno
+                          .Include(a => a.Plano)
+                          .ToListAsync()) :
                           Problem("Entity set 'SistemaAcademiaContext.Aluno'  is null.");
         }
 
@@ -36,6 +39,7 @@ namespace SistemaAcademia.Controllers
             }
 
             var aluno = await _context.Aluno
+                .Include(a => a.Plano)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (aluno == null)
             {
@@ -48,7 +52,9 @@ namespace SistemaAcademia.Controllers
         // GET: Alunos/Create
         public IActionResult Create()
         {
-            return View();
+            var viewModel = new AlunoFormViewModel();
+            viewModel.Planos = _context.Plano.ToList();
+            return View(viewModel);
         }
 
         // POST: Alunos/Create
@@ -56,7 +62,7 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Cpf,Email,Telefone,DataNasc")] Aluno aluno)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Cpf,Email,Telefone,DataNasc,PlanoId")] Aluno aluno)
         {
            
                 _context.Add(aluno);
@@ -78,7 +84,10 @@ namespace SistemaAcademia.Controllers
             {
                 return NotFound();
             }
-            return View(aluno);
+            AlunoFormViewModel viewModel = new AlunoFormViewModel();
+            viewModel.Aluno = aluno;
+            viewModel.Planos = _context.Plano.ToList();
+            return View(viewModel);
         }
 
         // POST: Alunos/Edit/5
@@ -86,15 +95,13 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Cpf,Email,Telefone,DataNasc")] Aluno aluno)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Cpf,Email,Telefone,DataNasc,PlanoId")] Aluno aluno)
         {
             if (id != aluno.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(aluno);
@@ -112,8 +119,7 @@ namespace SistemaAcademia.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(aluno);
+
         }
 
         // GET: Alunos/Delete/5
@@ -125,6 +131,7 @@ namespace SistemaAcademia.Controllers
             }
 
             var aluno = await _context.Aluno
+                .Include(a => a.Plano)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (aluno == null)
             {

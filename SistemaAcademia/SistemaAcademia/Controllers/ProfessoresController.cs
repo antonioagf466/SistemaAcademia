@@ -56,15 +56,13 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nome,Cref,Email,Especialidade,Ativo")] Professor professor)
+        public async Task<IActionResult> Create([Bind("Id,Nome,Cref,Email,Especialidade")] Professor professor)
         {
-            if (ModelState.IsValid)
-            {
+            
                 _context.Add(professor);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
-            return View(professor);
+            
         }
 
         // GET: Professores/Edit/5
@@ -88,15 +86,13 @@ namespace SistemaAcademia.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Cref,Email,Especialidade,Ativo")] Professor professor)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Nome,Cref,Email,Especialidade")] Professor professor)
         {
             if (id != professor.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(professor);
@@ -114,8 +110,6 @@ namespace SistemaAcademia.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            }
-            return View(professor);
         }
 
         // GET: Professores/Delete/5

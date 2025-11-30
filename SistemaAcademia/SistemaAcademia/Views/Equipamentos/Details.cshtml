@@ -40,8 +40,48 @@
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Status)
         </dd>
+        <dt class="col-sm-2">
+            Sala
+        </dt>
+        <dd class="col-sm-10">
+            @Model.Sala?.Nome
+        </dd>
     </dl>
 </div>
+<h4>Manutenções</h4>
+<hr />
+
+@if (Model.Manutencoes == null || !Model.Manutencoes.Any())
+{
+    <p>Nenhuma manutenção registrada para este equipamento.</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Tipo</th>
+                <th>Data</th>
+                <th>Técnico</th>
+                <th>Observação</th>
+                <th>Custo</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var m in Model.Manutencoes)
+            {
+                <tr>
+                    <td>@m.Tipo</td>
+                    <td>@m.Data.ToShortDateString()</td>
+                    <td>@m.Tecnico</td>
+                    <td>@m.Observacao</td>
+                    <td>R$ @m.Custo.ToString("F2")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
