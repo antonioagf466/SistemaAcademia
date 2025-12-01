@@ -3,19 +3,19 @@
 
 > Sistema de gestão para uma academia — backend ASP.NET Core com Entity Framework Core.
 
-**Trabalho feito por:** Antonio Geraldes, Antonio Bernardo e Eduardo Vigil
+**Trabalho feito por:** [Antonio Geraldes](https://github.com/antonioagf466), [Antonio Bernardo](https://github.com/abswing) e [Eduardo Vigil](https://github.com/efmvigil)
 
 **Resumo:**
 - Projeto em ASP.NET Core; já contém migrations na pasta `Migrations`.
 
 **Tecnologias**
-- **Framework:** ASP.NET Core
+- **Framework:** ASP.NET Core e Bootstrap
 - **ORM:** Entity Framework Core
-- **Linguagem:** C#
+- **Linguagem:** C#, HTML e CSS
 - **Banco de dados:** (configurável via `appsettings.json`, tipicamente SQL Server / LocalDB)
 
 **Pré-requisitos**
-- .NET SDK 8.0+ instalado (ou a versão indicada no arquivo `.csproj`).
+- .NET SDK (verificar a versão indicada no arquivo `.csproj`).
 - Visual Studio 2022/2023 (recomendado) para a experiência descrita abaixo.
 
 **Como clonar**
@@ -43,13 +43,13 @@ Aplicar migrations e atualizar o banco (Package Manager Console):
 2. Selecione o **Default Project** correto (ex.: `SistemaAcademia`) na dropdown do Package Manager Console.
 3. Para aplicar todas as migrations existentes e atualizar o banco, execute:
 
-```powershell
+```Console do gerenciador de pacotes(NuGet)
 Update-Database
 ```
 
 4. Para criar uma nova migration após alterar modelos (models):
 
-```powershell
+```Console do gerenciador de pacotes(NuGet)
 Add-Migration NomeDaMigration
 Update-Database
 ```
@@ -63,7 +63,8 @@ Update-Database
 - No Visual Studio: `F5` ou `Ctrl+F5`.
 
 **Estrutura relevante**
-- `Controllers/` — controllers MVC/API
+- `wwwroot/index.cshtml` - landing page
+-  `Controllers/` — controllers MVC/API
 - `Models/` — entidades do domínio
 - `Views/` — renderiza csshtml
 - `Migrations/` — migrations do EF Core
@@ -71,6 +72,6 @@ Update-Database
 
 
 **Créditos**
-- Desenvolvimento: Antonio, Bernardo e Eduardo
+- Desenvolvimento: [Antonio Geraldes](https://github.com/antonioagf466), [Antonio Bernardo](https://github.com/abswing) e [Eduardo Vigil](https://github.com/efmvigil)
 
 ---
