@@ -3,7 +3,7 @@
 
 > Sistema de gestão para uma academia — backend ASP.NET Core com Entity Framework Core.
 
-**Trabalho feito por:** Antonio, Bernardo Jesus e Eduardo
+**Trabalho feito por:** Antonio Geraldes, Antonio Bernardo e Eduardo Vigil
 
 **Resumo:**
 - Projeto em ASP.NET Core; já contém migrations na pasta `Migrations`.
