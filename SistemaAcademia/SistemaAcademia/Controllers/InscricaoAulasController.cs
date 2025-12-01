@@ -128,24 +128,64 @@ namespace SistemaAcademia.Controllers
                 return NotFound();
             }
 
-                try
+            try
+            {
+                // Get the original enrollment from database
+                var originalInscricao = await _context.InscricaoAula
+                    .Include(i => i.Aula)
+                    .FirstOrDefaultAsync(i => i.Id == id);
+
+                if (originalInscricao == null)
                 {
-                    _context.Update(inscricaoAula);
-                    await _context.SaveChangesAsync();
+                    return NotFound();
                 }
-                catch (DbUpdateConcurrencyException)
+
+                // Check if the class is being changed
+                if (originalInscricao.AulaId != inscricaoAula.AulaId)
                 {
-                    if (!InscricaoAulaExists(inscricaoAula.Id))
+                    // Get the new class
+                    var newAula = await _context.Aula.FindAsync(inscricaoAula.AulaId);
+                    if (newAula == null)
                     {
                         return NotFound();
                     }
-                    else
+
+                    // Check if there are vacancies in the new class
+                    if (newAula.Vagas <= 0)
                     {
-                        throw;
+                        InscricaoAulaFormViewModel viewModel = new InscricaoAulaFormViewModel();
+                        viewModel.InscricaoAula = inscricaoAula;
+                        viewModel.Aulas = _context.Aula.ToList();
+                        viewModel.Alunos = _context.Aluno.ToList();
+                        ModelState.AddModelError(string.Empty, "Não há vagas disponíveis na nova aula.");
+                        return View(viewModel);
                     }
+
+                    // Adjust vacancies: return one to old class, take one from new class
+                    originalInscricao.Aula.Vagas++;  // Return spot to old class
+                    newAula.Vagas--;  // Take spot from new class
                 }
-                return RedirectToAction(nameof(Index));
+
+                // Update the enrollment properties
+                originalInscricao.AlunoId = inscricaoAula.AlunoId;
+                originalInscricao.AulaId = inscricaoAula.AulaId;
+
+                _context.Update(originalInscricao);
+                await _context.SaveChangesAsync();
             }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!InscricaoAulaExists(inscricaoAula.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
 
 
         // GET: InscricaoAula/Delete/5

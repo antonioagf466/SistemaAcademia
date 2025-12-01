@@ -126,10 +126,30 @@ namespace SistemaAcademia.Controllers
                 return NotFound();
             }
 
+
                 try
                 {
-                    _context.Update(aluno);
+                    // Carrega o aluno existente do banco
+                    var alunoExistente = await _context.Aluno.FindAsync(id);
+                    if (alunoExistente == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Atualiza apenas as propriedades que podem ser editadas
+                    alunoExistente.Nome = aluno.Nome;
+                    alunoExistente.Cpf = aluno.Cpf;
+                    alunoExistente.Email = aluno.Email;
+                    alunoExistente.Telefone = aluno.Telefone;
+                    alunoExistente.DataNasc = aluno.DataNasc;
+                    alunoExistente.PlanoId = aluno.PlanoId;
+
+                    // NÃO atualiza: DataCriacao, Matricula (mantém os valores originais)
+
+                    _context.Update(alunoExistente);
                     await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
@@ -142,8 +162,13 @@ namespace SistemaAcademia.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
 
+
+            // Se houver erros de validação, retorna para a view com os dados
+            AlunoFormViewModel viewModel = new AlunoFormViewModel();
+            viewModel.Aluno = aluno;
+            viewModel.Planos = _context.Plano.ToList();
+            return View(viewModel);
         }
 
         // GET: Alunos/Delete/5
